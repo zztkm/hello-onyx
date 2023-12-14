@@ -11,3 +11,7 @@ config {
     dependency_binary_path "./bin" 
 }
 
+dependencies {
+    http-server "0.2.24" git="http://github.com/onyx-lang/pkg-http-server" 
+}
+
