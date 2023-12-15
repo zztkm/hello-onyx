@@ -10,6 +10,10 @@ build:
 wasi:
 	onyx build --runtime wasi -o wasi.wasm main.onyx 
 
+.PHONY: js
+js:
+	onyx build --runtime js -o js.wasm game.onyx 
+
 .PHONY: wasix
 wasix:
 	onyx build main.onyx -r wasi -DWASIX -o wasix.wasm
