@@ -1,5 +1,36 @@
-use core {printf};
+// 相対パスでパッケージを読み込む
+// http-server package は packages.onyx の中で load されている
+// https://docs.onyxlang.io/book/structure/load.html#using-load-directives
+#load "./lib/packages"
+
+use core {*};
+
+use http
+use http.server { Request, Response, route }
+
+// Tag the procedure with a `route` structure, so it can be found by the router.
+#tag route.{ .GET, "/" }
+index :: (req: &Request, res: &Response) {
+    // Respond with HTML
+    res->html("HTTP Server in Onyx!");
+    
+    // Set status to 200
+    res->status(200);
+
+    // Mark the response as completed
+    res->end();
+}
 
 main :: () {
-    printf("hello onyx!");
+    // Create a router that will route the traffic.
+    router := http.server.router();
+
+    // Collect routes from all packages.
+    router->collect_routes();
+
+    // Create a TCP server out of your router.
+    app := http.server.tcp(&router);
+
+    // Serve on port 8000.
+    app->serve(8000);
 }
